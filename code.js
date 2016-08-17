@@ -2,7 +2,7 @@ var main = function(){
   
   
   function startGame() {
-  document.getElementByID("startgame").display
+  $('.button').hide();
   
   
   
