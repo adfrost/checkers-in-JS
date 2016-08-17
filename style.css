@@ -1,8 +1,8 @@
 .button {
-  position: fixed;
-  left: 300px;
-  top: 300px;
-  color: #00F;
-  text-align:center;
-  border: 1px black;
+  position: relative;
+  text-align: center;
+  font-size: 2em;
+  border: 1px solid black;
+  cursor: pointer;
+  opacity: 1;
 }
