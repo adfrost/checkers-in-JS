@@ -1,14 +1,8 @@
-#startButton {
-  color: #00F;
+.button {
   position: fixed;
   left: 300px;
   top: 300px;
-  border: 1px black;
-  
-}
-
-.button {
-  color: green;
+  color: #00F;
   text-align:center;
   border: 1px black;
 }
