@@ -1,8 +1,7 @@
 .button {
-  position: fixed;
-  left: 300px;
-  top: 300px;
+  position: relative;
   color: #00F;
   text-align:center;
   border: 1px solid black;
 }
+ 
