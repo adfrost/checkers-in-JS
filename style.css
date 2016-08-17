@@ -1,4 +1,8 @@
 #startButton {
   color: #00F;
+  background-color: #FFF;
+  position: fixed;
+  left: 300px;
+  top: 300px;
   
 }
