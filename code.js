@@ -1,17 +1,10 @@
 var main = function(){
   
+$('.button').click(function() {
+  $(this).hide();
+});
   
-  function startGame() {
-  $('.button').hide();
   
-  
-  
-}
-
-
-
-
-
 
 
 }
