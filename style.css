@@ -6,3 +6,9 @@
   top: 300px;
   
 }
+
+.button {
+  color: green;
+  text-align:center;
+  border: 1px black;
+}
