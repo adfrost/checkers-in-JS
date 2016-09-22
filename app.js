@@ -1,4 +1,4 @@
-var main = function(){
+var main = function() {
   var x = -1;
   var y = -1;
   var targetX = -1;
@@ -7,26 +7,29 @@ var main = function(){
   var isSelected = false;
   var target;
   var origin;
-  var colorTurn = "green";
- // var board = [5][5]; //was going to dynamically create board using only JS... eventually
-  //for(var i = 0; i < 5; i++) {} 
-$('#startBtn').click(function() {
-  $(this).hide();
-  $('#t01').show();
-}); 
+  var origin1;
+  var target1;
   
-  /* selecting a piece */
+$('#startBtn').click(function() {
+	console.log("test");
+  $(this).addClass("hidden");
+  $('#board').removeClass("hidden");
+}); 
 $("td").on("click",".piece", function() {
-  var originRow = $("tr").parent().children().index($(this).parent().parent()); //equivalent to commented code below
+  origin = $(this); //needed because you cant use .html() on a DOM element taken from $(this).get(0)
+  origin1 = $(this).get(0);	//use $(this).get(0) to get the actual DOM element that is $(this)
+  var originRow = $("tr").parent().children().index($(origin).parent().parent()); //equivalent to commented code below
 //var originRow = $(this).parent().parent().parent().children().index($(this).parent().parent());
-  var originCol = $(this).parent().parent().children().index($(this).parent());
-  if(isSelected == false) {
-    origin = $(this);
+  var originCol = $(origin).parent().parent().children().index($(origin).parent());
+  
+  if(!isSelected) {
     if($(this).hasClass("blue")) 
-      color = "blue";
-    else color = "red";
-    x = originCol; //for comparison if another piece is clicked
-    y = originRow;
+	 $(origin).data("color","blue");
+    else  
+	 $(origin).data("color","red");
+ 
+    $(origin).data("x", originCol); //for comparison if another piece is clicked
+    $(origin).data("y", originRow);
     isSelected = true; 
     $(this).addClass("clicked");
   } //a piece has already been selected
@@ -37,57 +40,59 @@ $("td").on("click",".piece", function() {
     }
    }
  }); 
-  /* selecting a square to move to */
 $("td").click(function() {
-   var targetCol = $(this).parent().children().index($(this));
-   var targetRow = $(this).parent().parent().children().index($(this).parent());
-  if(isSelected == true) {//if a piece is selected         
-    target = $(this);     //target is the TD element, not div inside
-    if(checkValid(targetCol, targetRow, x, y, color, target, origin)) {//was valid move made?
-      if(color == "blue")
-        colorTurn = "red";
-      else colorTurn = "blue";
-    }
-  }
+   target = $(this);	//used solely to move pieces with .html()
+   target1 = $(this).get(0);	//target is the TD element, not div inside
+   var targetCol = $(target).parent().children().index($(target));
+   var targetRow = $(target).parent().parent().children().index($(target).parent());
+   $(target).data("x", targetCol);
+   $(target).data("y", targetRow);
+  if(isSelected) //if a piece is selected             
+   checkValid(target, origin) //was valid move made?
 })
-var checkValid = function(t_x, t_y, o_x, o_y, color, target, origin) {
-    if(isAdjacent(t_x,t_y,o_x,o_y,color)) {//can you even move there?
+var checkValid = function(target, origin) {
+    if(isAdjacent(target,origin)) {//can you even move there?
       if(!($(target).html())) { //no piece at target, can move there
         movePiece(target,origin);
         return true;
       }
-      else if(checkTarget(t_x,t_y,o_x,o_y,color))  //if target is same color, do nothing 
+      else if(checkTarget(target,origin))  //if target is same color, do nothing 
         return true;
         else return false; 
     }
 }    
-var checkTarget = function(t_x,t_y,o_x,o_y,color) { //so target has piece, which color?
-  if($(target).children().hasClass(color)) //if has same color, do nothing
+var checkTarget = function(target,origin) { //so target has piece, which color?
+  var t_x = $(target).data("x");
+  var t_y = $(target).data("y");
+  var o_x = $(origin).data("x");
+  var o_y = $(origin).data("y"); 
+  if($(target).children().hasClass($(origin).data("color"))); //if has same color, do nothing
     return false;
-  //check if we can jump
+  //computing ID of next diagnoal
   var newX = (2 * t_x) - o_x;
-  if(color == "blue") 
+  if($(origin.data("color")) == "blue") 
     var newY = t_y - 1;
   else //color is red
-    var newY = t_y + 1;  
-  var newTarget = $("#" + newX + newY);
+    var newY = t_y + 1; 
+  var newTarget = $("#" + newX + newY); 	//need to access newX,newY using jQuery's .index(), instead of using <td> id... can i use .get() again?
   if(!($(newTarget).html())) { //is there a piece at (newX,newY)?
+  console.log("newTarget test");
     movePiece(newTarget,origin);
    $(target).children().remove(); 
   }
   else return false;
 }
-var isAdjacent = function(t_x,t_y,o_x,o_y,color) {   //can you even move there?
-  if((t_x == (o_x + 1)) || (t_x == (o_x - 1))) {
-    switch(color) {
+var isAdjacent = function(target,origin) {   //can you even move there?
+  var t_x = $(target).data("x");
+  var t_y = $(target).data("y");
+  var o_x = $(origin).data("x");
+  var o_y = $(origin).data("y"); 
+  if((t_x == (o_x + 1)) || (t_x == (o_x - 1))) {	
+    switch($(origin).data("color")) {
       case "blue":
-        if((t_y == (parseInt(o_y)) - 1))
-          return true;
-        else return false; 
+		return(t_y == (o_y - 1));
       case "red":
-        if((t_y == (parseInt(o_y)) + 1))
-          return true;
-        else return false;
+		return(t_y == (o_y + 1));
     }
   } else return false;  
 }
@@ -97,4 +102,4 @@ var movePiece = function(target,origin) { //given clicked squares ID, move selec
   $(origin).removeClass("clicked");
 }
 }
-$(document).ready(main);
+ $(document).ready(main);
