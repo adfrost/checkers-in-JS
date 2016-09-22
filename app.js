@@ -11,7 +11,6 @@ var main = function() {
   var target1;
   
 $('#startBtn').click(function() {
-	console.log("test");
   $(this).addClass("hidden");
   $('#board').removeClass("hidden");
 }); 
@@ -31,11 +30,11 @@ $("td").on("click",".piece", function() {
     $(origin).data("x", originCol); //for comparison if another piece is clicked
     $(origin).data("y", originRow);
     isSelected = true; 
-    $(this).addClass("clicked");
+    $(this).addClass("active");
   } //a piece has already been selected
    else {
     if((x == originCol) && (y == originRow)) { //is this piece the selected piece?
-      $(this).removeClass("clicked"); 
+      $(this).removeClass("active"); 
       isSelected = false;
     }
    }
@@ -99,7 +98,7 @@ var isAdjacent = function(target,origin) {   //can you even move there?
 var movePiece = function(target,origin) { //given clicked squares ID, move selected piece to it
   target.html(origin);
   isSelected = false;
-  $(origin).removeClass("clicked");
+  $(origin).removeClass("active");
 }
 }
  $(document).ready(main);
