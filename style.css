@@ -11,7 +11,7 @@ table, td {
   border-collapse: collapse;
   vertical-align: 'middle';
 }
-#t01 {
+#board {
   display: show;
   width: 550px;
   height: 550px;
@@ -44,4 +44,4 @@ table, td {
 }
 .piece.red { background:red; }
 .piece.blue { background:blue; } 
-.clicked { box-shadow: 0 0 16px yellow; }
+.active { box-shadow: 0 0 16px yellow; }
